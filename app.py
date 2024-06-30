@@ -1,3 +1,4 @@
+import streamlit as st
 import tensorflow as tf
 from keras.models import load_model
 from PIL import Image
@@ -32,7 +33,7 @@ def create_highlighted_overlay(original_image, highlighted_region, mask, highlig
     overlay[np.where(mask)] = highlight_color
     return overlay
 
-# Main streamlit app
+# Main Streamlit app
 st.set_page_config(
     page_title="Breast Cancer Classification",
     layout="wide",
@@ -117,16 +118,13 @@ if uploaded_file is not None:
                 emoji = '😕'  # Confused face for lower confidence
 
             # Display the CNN prediction result with styled box
-            st.markdown('<div style="background-color:white; padding:10px; border-radius:10px;">'
-                        '<p style="color:black; font-size:18px; font-weight:bold;">CNN Prediction</p>'
-                        f'<p style="color:black;">Result: {cnn_result}</p>'
-                        f'<p style="color:black;">Confidence: {cnn_confidence:.2f}% {emoji}</p>'
+            st.markdown(f'<div style="background-color:white; padding:10px; border-radius:10px;">'
+                        f'**CNN Prediction:** {cnn_result} {emoji}<br>'
+                        f'**Confidence:** {cnn_confidence:.2f}%'
                         '</div>', unsafe_allow_html=True)
 
-    except ValueError as e:
-        st.sidebar.error(f"ValueError: {e}")
     except Exception as e:
-        st.sidebar.error(f"An unexpected error occurred during image processing or prediction: {e}")
+        st.error(f"Error during image processing or prediction: {e}")
 
 # Main Section for Breast Cancer Prediction Parameters Input
 st.title('Breast Cancer Prediction Parameters Input')
@@ -201,4 +199,5 @@ if st.button('Predict'):
         st.error(f"ValueError: {e}")
     except Exception as e:
         st.error(f"An unexpected error occurred during prediction: {e}")
+
 
